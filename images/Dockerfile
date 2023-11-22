@@ -8,7 +8,7 @@ ARG OSVERSION=22.04
 
 USER root
 
-COPY ../scripts/entrypoint.sh ../scripts/reg_token.sh ../scripts/app_token.sh ./
+COPY scripts/entrypoint.sh scripts/reg_token.sh scripts/app_token.sh ./
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
         apt-transport-https \

@@ -6,6 +6,11 @@ on:
       runnerVersion:
         type: string
         description: Version of the runner being installed
+  workflow_call:
+    inputs:
+      runnerVersion:
+        type: string
+        description: Version of the runner being installed
 
 env:
   REGISTRY: ghcr.io

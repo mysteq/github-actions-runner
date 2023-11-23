@@ -40,3 +40,5 @@
       if: needs.deploy.outputs.cache-hit != 'true'
       with:
         runnerVersion: ${{ needs.deploy.outputs.version }}
+      secrets:
+        DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}

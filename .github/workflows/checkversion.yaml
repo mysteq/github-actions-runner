@@ -29,6 +29,9 @@
             echo "version=${version}" >> "$GITHUB_OUTPUT"
           shell: bash
     build-images:
+      permissions:
+        contents: read
+        packages: write
       needs: deploy
       uses: ./.github/workflows/publish.yaml
       if: needs.deploy.outputs.cache-hit != 'true'

@@ -11,6 +11,10 @@ on:
       runnerVersion:
         type: string
         description: Version of the runner being installed
+    secrets:
+      DOCKER_TOKEN:
+        description: Token for logging into the docker registry
+        required: true
 
 env:
   REGISTRY: ghcr.io

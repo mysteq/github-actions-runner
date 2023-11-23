@@ -8,6 +8,9 @@
   jobs:
     deploy:
       runs-on: ubuntu-latest
+      outputs:
+        cache-hit: ${{ steps.cache.outputs.cache-hit }}
+        version: ${{ steps.run.outputs.version }}
       steps:
         - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
         - name: Fetch releases
@@ -25,7 +28,9 @@
             version=`cat tags.list | head -n 1 |  cut -d":" -f 2 | tr -d "\"v, "`
             echo "version=${version}" >> "$GITHUB_OUTPUT"
           shell: bash
-        - uses: ./.github/workflows/publish.yaml
-          if: steps.cache.outputs.cache-hit != 'true'
-          with:
-            runnerVersion: ${{ steps.run.outputs.version }}
+    build-images:
+      needs: deploy
+      uses: ./.github/workflows/publish.yaml
+      if: needs.deploy.outputs.cache-hit != 'true'
+      with:
+        runnerVersion: ${{ needs.deploy.outputs.version }}

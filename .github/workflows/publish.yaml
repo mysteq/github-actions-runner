@@ -39,7 +39,6 @@ jobs:
               core.setOutput('version', inputRunnerVersion);
               return
             }
-            const runnerVersion = fs.readFileSync('${{ github.workspace }}/src/runnerversion', 'utf8').replace(/\n$/g, '')
             console.log(`Using runner version ${runnerVersion}`)
             core.setOutput('version', runnerVersion);
 

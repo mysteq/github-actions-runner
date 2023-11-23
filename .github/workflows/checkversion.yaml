@@ -25,7 +25,7 @@
             version=`cat tags.list | head -n 1 |  cut -d":" -f 2 | tr -d "\"v, "`
             echo "version=${version}" >> "$GITHUB_OUTPUT"
           shell: bash
-        - uses: ./.github/workflows/publish.yaml@main
+        - uses: ./.github/workflows/publish.yaml
           if: steps.cache.outputs.cache-hit != 'true'
           with:
             runnerVersion: ${{ steps.run.outputs.version }}

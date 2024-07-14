@@ -1,7 +1,10 @@
 version: 2
 updates:
-- package-ecosystem: "docker"
-  directory: "/images"
-  schedule:
-    interval: "daily" 
-  target-branch: "main" 
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "docker"
+    directory: "/images"
+    schedule:
+      interval: "daily" 

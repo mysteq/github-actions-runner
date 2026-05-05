@@ -25,7 +25,13 @@ RUN curl -sSL -O https://packages.microsoft.com/config/ubuntu/${OSVERSION}/packa
     && dpkg -i packages-microsoft-prod.deb \
     && rm -f packages-microsoft-prod.deb
 
-RUN apt-get update \
+RUN curl -sLS https://packages.microsoft.com/keys/microsoft.asc \
+        | gpg --dearmor \
+        | tee /etc/apt/keyrings/microsoft.gpg > /dev/null \
+    && chmod go+r /etc/apt/keyrings/microsoft.gpg \
+    && echo "Types: deb\nURIs: https://packages.microsoft.com/repos/azure-cli/\nSuites: $(lsb_release -cs)\nComponents: main\nArchitectures: $(dpkg --print-architecture)\nSigned-by: /etc/apt/keyrings/microsoft.gpg" \
+        | tee /etc/apt/sources.list.d/azure-cli.sources \
+    && apt-get update \
     && apt-get install -y --no-install-recommends \
         azure-cli \
     && rm -rf /var/lib/apt/lists/*

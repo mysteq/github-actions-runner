@@ -23,12 +23,11 @@ RUN apt-get update \
 
 RUN curl -sSL -O https://packages.microsoft.com/config/ubuntu/${OSVERSION}/packages-microsoft-prod.deb \
     && dpkg -i packages-microsoft-prod.deb \
-    && rm -f packages-microsoft-prod.deb \
-    && apt-get update \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -f packages-microsoft-prod.deb
 
-RUN apt-get install -y --no-install-recommends \
-    azure-cli \
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        azure-cli \
     && rm -rf /var/lib/apt/lists/*
 
 RUN export RUNNER_ARCH=${TARGETARCH} \
@@ -40,15 +39,6 @@ RUN export RUNNER_ARCH=${TARGETARCH} \
     && rm -f /tmp/powershell.tar.gz \
     && chmod +x /usr/share/powershell/7/pwsh \
     && ln -s /usr/share/powershell/7/pwsh /usr/bin/pwsh
-
-# RUN curl -s https://packagecloud.io/install/repositories/opentofu/tofu/script.deb.sh?any=true -o /tmp/tofu-repository-setup.sh \
-#     && chmod +x /tmp/tofu-repository-setup.sh \
-#     && /tmp/tofu-repository-setup.sh \
-#     && rm -f /tmp/tofu-repository-setup.sh \
-#     && apt-get update \
-#     && apt-get install -y --no-install-recommends \
-#         tofu \
-#     && rm -rf /var/lib/apt/lists/*
 
 RUN chmod +x entrypoint.sh reg_token.sh app_token.sh \
     && chown runner:docker entrypoint.sh reg_token.sh app_token.sh

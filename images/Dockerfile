@@ -3,28 +3,32 @@ FROM ghcr.io/actions/actions-runner:latest
 
 ARG TARGETOS
 ARG TARGETARCH
-ARG PWSH_VERSION=7.4.0
-ARG OSVERSION=22.04
+ARG PWSH_VERSION=7.4.15
+ARG OSVERSION=24.04
 
 USER root
 
 COPY ../scripts/entrypoint.sh ../scripts/reg_token.sh ../scripts/app_token.sh ./
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
-        apt-transport-https \
-        ca-certificates \
-        curl \
-        jq \
-        gnupg \
-        lsb-release \
-        software-properties-common \
-        wget \
+    apt-transport-https \
+    ca-certificates \
+    curl \
+    jq \
+    gnupg \
+    lsb-release \
+    software-properties-common \
+    wget \
     && rm -rf /var/lib/apt/lists/*
 
 RUN curl -sSL -O https://packages.microsoft.com/config/ubuntu/${OSVERSION}/packages-microsoft-prod.deb \
     && dpkg -i packages-microsoft-prod.deb \
     && rm -f packages-microsoft-prod.deb \
     && apt-get update \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN apt-get install -y --no-install-recommends \
+    azure-cli \
     && rm -rf /var/lib/apt/lists/*
 
 RUN export RUNNER_ARCH=${TARGETARCH} \
